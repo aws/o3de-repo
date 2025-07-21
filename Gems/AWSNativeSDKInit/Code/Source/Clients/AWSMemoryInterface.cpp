@@ -12,6 +12,7 @@
 namespace AWSNativeSDKInit
 {
 #if defined(PLATFORM_SUPPORTS_AWS_NATIVE_SDK)
+    AZ_CHILD_ALLOCATOR_WITH_NAME(AWSNativeSDKAllocator, "AWSNativeSDKAllocator", "{8B4DA42F-2507-4A5B-B13C-4B2A72BC161E}", AZ::SystemAllocator);
     const char* MemoryManager::AWS_API_ALLOC_TAG = "AwsApi";
 
     void MemoryManager::Begin() 
@@ -22,14 +23,14 @@ namespace AWSNativeSDKInit
     {
     }
 
-    void* MemoryManager::AllocateMemory(std::size_t blockSize, std::size_t alignment, const char* allocationTag) 
+    void* MemoryManager::AllocateMemory(std::size_t blockSize, std::size_t alignment, const char* /*allocationTag*/) 
     {
-        return m_allocator.Allocate(blockSize, alignment, 0, allocationTag);
+        return AZ::AllocatorInstance<AWSNativeSDKAllocator>::Get().allocate(blockSize, alignment);
     }
 
     void MemoryManager::FreeMemory(void* memoryPtr) 
     {
-        m_allocator.DeAllocate(memoryPtr);
+        AZ::AllocatorInstance<AWSNativeSDKAllocator>::Get().deallocate(memoryPtr);
     }
 #endif
 }

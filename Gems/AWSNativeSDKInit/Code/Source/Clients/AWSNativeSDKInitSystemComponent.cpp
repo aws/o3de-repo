@@ -100,15 +100,15 @@ namespace AWSNativeSDKInit
                 logLevel = Aws::Utils::Logging::LogLevel::Error;
             #endif
 
-            m_awsSDKOptions.loggingOptions.logLevel = logLevel;
-            m_awsSDKOptions.loggingOptions.logger_create_fn = [logLevel]()
+            m_awsSDKOptions.Get().loggingOptions.logLevel = logLevel;
+            m_awsSDKOptions.Get().loggingOptions.logger_create_fn = [logLevel]()
                 {
                     return Aws::MakeShared<AWSLogSystemInterface>("AWS", logLevel);
                 };
 
-            m_awsSDKOptions.memoryManagementOptions.memoryManager = &m_memoryManager;
-            Platform::CustomizeSDKOptions(m_awsSDKOptions);
-            Aws::InitAPI(m_awsSDKOptions);
+            m_awsSDKOptions.Get().memoryManagementOptions.memoryManager = &m_memoryManager;
+            Platform::CustomizeSDKOptions(m_awsSDKOptions.Get());
+            Aws::InitAPI(m_awsSDKOptions.Get());
         #endif // #if defined(PLATFORM_SUPPORTS_AWS_NATIVE_SDK)
 
         Platform::CopyCaCertBundle();
@@ -124,7 +124,7 @@ namespace AWSNativeSDKInit
     {
         m_initialized = false;
         #if defined(PLATFORM_SUPPORTS_AWS_NATIVE_SDK)
-            Aws::ShutdownAPI(m_awsSDKOptions);
+            Aws::ShutdownAPI(m_awsSDKOptions.Get());
             Platform::CustomizeShutdown();
         #endif
     }

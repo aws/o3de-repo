@@ -15,7 +15,7 @@ namespace AWSNativeSDKInit
         //! Call to guarantee that the API is initialized with proper Open 3D Engine settings.
         //! It's fine to call this from every module which needs to use the NativeSDK
         //! Creates a static shared pointer using the AZ EnvironmentVariable system.
-        //! This will prevent a the AWS SDK from going through the shutdown routine until all references are gone, or
+        //! This will prevent the AWS SDK from going through the shutdown routine until all references are gone, or
         //! the AZ::EnvironmentVariable system is brought down.
         virtual void InitAwsApi() = 0;
 

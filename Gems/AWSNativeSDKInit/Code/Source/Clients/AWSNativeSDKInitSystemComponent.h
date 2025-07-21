@@ -55,10 +55,10 @@ namespace AWSNativeSDKInit
         ////////////////////////////////////////////////////////////////////////
 
     private:
-        MemoryManager m_memoryManager;
 
         #if defined(PLATFORM_SUPPORTS_AWS_NATIVE_SDK)
-            Aws::SDKOptions m_awsSDKOptions;
+            AWSNativeSDKInit::MemoryManager m_memoryManager;
+            AZ::EnvironmentVariable<Aws::SDKOptions> m_awsSDKOptions;
         #endif
 
 		bool m_initialized = false;
